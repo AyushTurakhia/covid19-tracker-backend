@@ -198,16 +198,18 @@ def get_charbot_data(request):
         return Response(result_json,status=200)
     elif intent=="search_country":
         country_name = parameters.get("geo-country")[0]
+        if(country_name=="United States"):
+            country_name = "USA"
         required_data, deaths_data, testsdone_data = get_data_country(country_name)
         
         webhookresponse = "***Covid Report*** \n\n" + " New cases :" + str(required_data.get('new')) + \
-                          "\n" + " Active cases : " + str(
+                        "\n" + " Active cases : " + str(
             required_data.get('active')) + "\n" + " Critical cases : " + str(required_data.get('critical')) + \
-                          "\n" + " Recovered cases : " + str(
+                        "\n" + " Recovered cases : " + str(
             required_data.get('recovered')) + "\n" + " Total cases : " + str(required_data.get('total')) + \
-                          "\n" + " Total Deaths : " + str(deaths_data.get('total')) + "\n" + " New Deaths : " + str(
+                        "\n" + " Total Deaths : " + str(deaths_data.get('total')) + "\n" + " New Deaths : " + str(
             deaths_data.get('new')) + \
-                          "\n" + " Total Test Done : " + str(deaths_data.get('total')) + "\n\n*******END********* \n "
+                        "\n" + " Total Test Done : " + str(deaths_data.get('total')) + "\n\n*******END********* \n "
         print(webhookresponse)
         result =  {
 
@@ -305,6 +307,7 @@ def get_data_country(name):
 
     response = requests.request("GET", url, headers=headers, params=querystring)
     result = json.loads(response.text)
+    print(result)
     result=result["response"][0]
     return result.get('cases') , result.get('deaths'),result.get('tests')
 
@@ -322,4 +325,6 @@ def get_total_data():
     print(response.text)
     result = json.loads(response.text)
     return result.get('data')
+
+
 

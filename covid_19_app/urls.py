@@ -9,4 +9,6 @@ urlpatterns = [
     path('statewise_timeseries_data/', statewise_timeseries_data, name="state wise time series"),
 
     path('get_charbot_data/', get_charbot_data, name="chatbot data"),
+    
+    path('test/', test, name="chatbot data"),
 ]
