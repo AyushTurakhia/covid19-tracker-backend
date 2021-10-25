@@ -335,26 +335,14 @@ def get_total_data():
 
 @api_view(["POST"])
 def chat_bot(request):
-    # session_id = str(uuid.uuid5())
+    session_id =  "session_{}".format(uuid.uuid4())
     GOOGLE_AUTHENTICATION_FILE_NAME = settings.GCS_CREDENTIALS_FILE_PATH
     current_directory = os.path.dirname(os.path.realpath(__file__))
     path = os.path.join(current_directory, GOOGLE_AUTHENTICATION_FILE_NAME)
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = path
     GOOGLE_PROJECT_ID = settings.GS_PROJECT_ID
     GOOGLE_KNOWLEDGE_ID = settings.GS_KNOWLEDGE_ID
-    session_id = "1234567891"
-    context_short_name = "does_not_matter"
     input_text = request.data.get("input","")
-    # print(input_text)
-    context_name = "projects/" + GOOGLE_PROJECT_ID + "/agent/sessions/" + session_id + "/contexts/" + \
-               context_short_name.lower()
-    parameters = dialogflow.types.struct_pb2.Struct()
-    context_1 = dialogflow.types.context_pb2.Context(
-        name=context_name,
-        lifespan_count=2,
-        parameters=parameters
-    )
-    query_params_1 = {"contexts": [context_1]}
     language_code = 'en'
     response = detect_intent_knowledge(GOOGLE_PROJECT_ID,session_id,language_code,GOOGLE_KNOWLEDGE_ID,input_text)
     # print('response is: ',response)
