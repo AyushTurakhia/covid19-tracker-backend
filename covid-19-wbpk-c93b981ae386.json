@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "covid-19-wbpk",
+  "private_key_id": "c93b981ae386366b9f243ef1f487d89c7a789aae",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCVEIAA89OlpP/k\nJlcT8xF505WQX7iQIgWL9XsEH2Jqkp7fLSDHUTxG2N+TDtuo+JMtlqbFYT44XUgt\nO4722Z+plWopW5KROkW1ttTla8RsWFbHdeVSvgd+y4cEvY5LBdzrqG+NB0DhiyrH\nkUdswE6E65SYfLjGE4CwAGLQDPCbHS8TLd9Z9D1MXRu4SD6zg0S/ndqLY0pByVgO\n7VSKaMq6xVcC+4JdmEnhmhtGC2Hhijcd1rSPAKucry6edQtI+so/TRdR1Ck6V5Z7\nF4MNkpdhLCy4IuMhsAoaWhZr1J76xIVKspkXmGiwf92IVP1mM0fKFeNmltpreea9\n3cXdsC5hAgMBAAECggEAE+DI6Rea1D6OHzsbpp3l6TSVf9S79ICM886PEowq4CJg\nTEuk0N+c5ae7HM3A7iYD3nL2F2Ex3mtWGi4UkQeRWpiBuTUsdPBr5mEUv+lgnsAj\nBmNK6v9LWZXDkhbDGG8WOFjUU16xwMIBuO4/M5nrfp85yCHttABay12pz6vCFDUa\nWqI6NUygm2a7syZLUFiCbmfbCGINbt4cRL6CCOIBluuQ1BGXV9gdJh0alNeoEXka\nAX4Z7tglyYG4OFRZd5QxiJdKO5STg+H9jfeAhPXwlgPLieXpeu7pKMar0SDe0nLE\nhW96WgxICUaWdU3HzjYJvgWoLLw9r4kRcCFFkek/qQKBgQDSCHGNjtZ4HP9ElR6m\n9bjS42o3RwSLIAOv4pdodwC4GnL7jZYwja954slX900fkrTudgYQf/YqL7vJOjiT\nMqp3lFDULNB6p1eIHDOBJV45oMsuqLbk1XoEKypzCE01EtJRVv+kYGsrqB0B245d\nDBDWwhjOJEel7q7NT5EAaAOnlQKBgQC1sClV3UDG/FRVAoByCcA6cQ6GtvlE0wS7\n4GMjtH+Q5JF10VT94IE4ce1CNBDK7GQzl3O+FigdwQi6ljTyafQFBTX5J/L/RpOS\n7ydOkOoq30Gl6gCcgolqZsMfSVJO52MNaXf/LBBPTznXkAD88f2I29VbX49qgk65\nnCacvO7InQKBgQDH3TkRV8dG7XEMNkrA3jtOkxHUIER2j7RyftFNm1CX4LNiJU2y\nTmGZPvISP0aosNZzxOPod5wscNflmP2VNTV6LSzteue4j91/rDZmwsRzWkt+zxWb\nlHlT1i/C3zd5Nbvlo0AJj6bsGEHiLqe+a2jqtDEemO+FOygkP37gQBqaMQKBgEEy\n7EJx2XMOzbyL30gNE7xlIc9aDe2SxBoflbQUa8q1GzXqXtOUIwr8ZyXgxT3swrB4\n4wINtWun/9flWy66suSyUAIPQfY1f3O0+qgI/N9Rqp89b+a6OVHDerXZe/3wruz7\nMiKRz3CGf71JYfFjbZYVPWVCz5ZrGJEm5fxNGGtJAoGAQOvNixHgyrrK/YZ9tie5\n/8VrThbYInIpwnLNzOJx9+XoggNGI5eskYqyxV6v+kmbTKI0CKXzqKMhe1dPs3A+\nPosT1yNCS25AAvNc2o1SkN9AyqPRKwFwwE8XYw4YZL5S23/+1bhbgfrrA8ahTHzr\nuDUCH2oaBxMZZCQsgzFNtjs=\n-----END PRIVATE KEY-----\n",
+  "client_email": "covid-bot@covid-19-wbpk.iam.gserviceaccount.com",
+  "client_id": "101209510053437383374",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/covid-bot%40covid-19-wbpk.iam.gserviceaccount.com"
+}

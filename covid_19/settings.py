@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-0s4u4s^q#ixp3rn()l+p81w%ycrq@t5*xe42&8ik#$cul38^xg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['crc27-covid19.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -82,7 +82,11 @@ CORS_ALLOW_CREDENTIALS = False
 CORS_ORIGIN_WHITELIST = (
      'http://localhost:4100',
      'http://localhost:4200',  
+     'http://google.com',
 )
+DIALOGFLOW = {
+    'client_access_token': 'e5dc21cab6df451c866bf5efacb40178',
+}
 
 
 
@@ -130,3 +134,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+GS_PROJECT_ID  = 'covid-19-wbpk'
+GS_KNOWLEDGE_ID  = 'MTU1Nzg0ODQzNzQyMTQwMTcwMjQ'
+GCS_CREDENTIALS_FILE_PATH = os.path.join(BASE_DIR, 'covid-19-wbpk-c93b981ae386.json')
+GCS_USE_UNSIGNED_URLS = True

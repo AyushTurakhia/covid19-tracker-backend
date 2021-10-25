@@ -6,6 +6,13 @@ from rest_framework.decorators import api_view
 import re
 from .utils import *
 import json
+import uuid
+import os, base64
+import dialogflow
+
+from google.cloud import dialogflow_v2beta1 as dialogflow_kb
+from django.conf import settings
+
 
 
 @api_view(["GET"])
@@ -307,7 +314,7 @@ def get_data_country(name):
 
     response = requests.request("GET", url, headers=headers, params=querystring)
     result = json.loads(response.text)
-    print(result)
+    # print(result)
     result=result["response"][0]
     return result.get('cases') , result.get('deaths'),result.get('tests')
 
@@ -322,9 +329,89 @@ def get_total_data():
 
     response = requests.request("GET", url, headers=headers)
 
-    print(response.text)
+    # print(response.text)
     result = json.loads(response.text)
     return result.get('data')
 
+@api_view(["POST"])
+def chat_bot(request):
+    # session_id = str(uuid.uuid5())
+    GOOGLE_AUTHENTICATION_FILE_NAME = settings.GCS_CREDENTIALS_FILE_PATH
+    current_directory = os.path.dirname(os.path.realpath(__file__))
+    path = os.path.join(current_directory, GOOGLE_AUTHENTICATION_FILE_NAME)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = path
+    GOOGLE_PROJECT_ID = settings.GS_PROJECT_ID
+    GOOGLE_KNOWLEDGE_ID = settings.GS_KNOWLEDGE_ID
+    session_id = "1234567891"
+    context_short_name = "does_not_matter"
+    input_text = request.data.get("input","")
+    # print(input_text)
+    context_name = "projects/" + GOOGLE_PROJECT_ID + "/agent/sessions/" + session_id + "/contexts/" + \
+               context_short_name.lower()
+    parameters = dialogflow.types.struct_pb2.Struct()
+    context_1 = dialogflow.types.context_pb2.Context(
+        name=context_name,
+        lifespan_count=2,
+        parameters=parameters
+    )
+    query_params_1 = {"contexts": [context_1]}
+    language_code = 'en'
+    response = detect_intent_knowledge(GOOGLE_PROJECT_ID,session_id,language_code,GOOGLE_KNOWLEDGE_ID,input_text)
+    # print('response is: ',response)
+    print(len(response))
+    output_text = ""
+    quick_reply = []
+    if len(response)==2:
+        quick_reply = str(response[1].text.text[0]).split(',')
+    output_text = response[0].text.text[0]
+    # print(quick_reply)
+    # print(output_text)
+    
+    return Response({"response":output_text,"quick reply":quick_reply},status=200)
+
+
+## Function to call Dialogflow detectintent API endpoint
+
+def detect_intent_knowledge(project_id, session_id, language_code, knowledge_base_id, text):
+   
+    session_client = dialogflow_kb.SessionsClient()
+
+    session_path = session_client.session_path(project_id, session_id)
+    print("Session path: {}\n".format(session_path))
+
+    text_input = dialogflow_kb.TextInput(text=text, language_code=language_code)
+
+    query_input = dialogflow_kb.QueryInput(text=text_input)
+
+    knowledge_base_path = dialogflow_kb.KnowledgeBasesClient.knowledge_base_path(
+        project_id, knowledge_base_id
+    )
+
+    query_params = dialogflow_kb.QueryParameters(
+        knowledge_base_names=[knowledge_base_path]
+    )
+
+    request = dialogflow_kb.DetectIntentRequest(
+        session=session_path, query_input=query_input, query_params=query_params
+    )
+    response = session_client.detect_intent(request=request)
+    # for testing
+    # print("=" * 20)
+    # print("Query text: {}".format(response.query_result.query_text))
+    # print(
+    #     "Detected intent: {} (confidence: {})\n".format(
+    #         response.query_result.intent.display_name,
+    #         response.query_result.intent_detection_confidence,
+    #     )
+    # )
+    # print("Fulfillment text: {}\n".format(response.query_result.fulfillment_text))
+    # print("Knowledge results:")
+    # knowledge_answers = response.query_result.knowledge_answers
+    # print(response)
+    # for answers in knowledge_answers.answers:
+    #     print(" - Answer: {}".format(answers.answer))
+    #     print(" - Confidence: {}".format(answers.match_confidence))
+
+    return response.query_result.fulfillment_messages
 
 
