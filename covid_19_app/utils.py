@@ -1,9 +1,7 @@
 from datetime import date, timedelta, datetime
 import requests
 from pytz import timezone
-
-from .models import StateCovidData
-
+from covid_19_app.models import StateCovidData
 
 def getStates():
     states = {
@@ -60,8 +58,6 @@ def collect_previous_data():
         if state_code != 'UN':
             state = state_code if state_code != 'TT' else "IN"
             state_name = state_details[state]
-            if(state=="IN"):
-                print(state_name)
             dates_data_json = {}
             for d in dates_data.keys():
                 
@@ -148,7 +144,7 @@ def get_daily_data():
             state_code = state_code if state_code != 'TT' else "IN"
             state_name = state_details[state_code]
             state_data_object = StateCovidData.objects.filter(state_name=state_name, state_code=state_code).first()
-            print(state_data_object)
+            # print(state_data_object)
             dates_data = {}
             if state_data_object is not None:
                 dates_data = state_data_object.dates_data
@@ -158,8 +154,8 @@ def get_daily_data():
                         del_dates.append(d)
                 for d in del_dates:
                     del dates_data[d]
-            print(dates_data)
-            print(state_data.keys())
+            # print(dates_data)
+            # print(state_data.keys())
             date_data = state_data
             current = {
                 "confirm": 0,
@@ -215,7 +211,7 @@ def get_daily_data():
                     meta_data_json["population"] = meta_data["population"]
                 if "notes" in meta_data.keys():
                     meta_data_json["note"] = meta_data["notes"]
-            print(meta_data_json)
+            # print(meta_data_json)
             dates_data[meta_data_json["date"]] = {
                 "confirm": current["confirm"],
                 "recovered": current["recovered"],
