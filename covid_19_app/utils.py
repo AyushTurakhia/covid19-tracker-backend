@@ -131,6 +131,7 @@ def collect_previous_data():
 
 
 def get_daily_data():
+    print("collecting data from indian gov. server.....")
     data = StateCovidData.objects.all().exists()
     if(not data):
         collect_previous_data()

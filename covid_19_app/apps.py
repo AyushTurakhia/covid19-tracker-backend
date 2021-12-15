@@ -6,6 +6,8 @@ class Covid19AppConfig(AppConfig):
     name = 'covid_19_app'
 
     def ready(self):
-        print("ok")
+        # print("start")
+        from covid_19_app.utils import get_daily_data
+        get_daily_data()
         from covid_19_app.scheluder import covid_api_scheduler 
         covid_api_scheduler.start_scheluer()

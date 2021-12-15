@@ -9,7 +9,7 @@ import json
 import uuid
 import os, base64
 import dialogflow
-
+from .serializers import StateDateSerializer
 from google.cloud import dialogflow_v2beta1 as dialogflow_kb
 from django.conf import settings
 
@@ -110,62 +110,59 @@ def total_data_states(request,code):
 
 @api_view(['post'])
 def statewise_timeseries_data(request): 
-    data = request.data
-    date_regex = "^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$"
+    ser = StateDateSerializer(data=request.data)
+    ser.is_valid(raise_exception=True)
+    data = ser.data
     state_code = data.get("state_code","")
     start_date = data.get("start_date","")
     end_date = data.get("end_date","")
-    if re.search(date_regex, start_date) and re.search(date_regex, end_date) and re.search("^[A-Z]{2}$",state_code):
-        if(start_date<end_date):
-            
-            result_dates_data=[]
-            state_data = StateCovidData.objects.filter(state_code=state_code).first()
-            if state_data is not None:
-                dates_data = state_data.dates_data
-                for date in dates_data.keys():
-                    print(date)
-                    if date>=start_date and date<=end_date:
-                        d = dates_data[date]
-                        res = {
-                            "date":date,
-                            "total_confirm":d["total_confirm"],
-                            "total_recovered":d["total_recovered"],
-                            "total_death":d["total_death"],
-                            "total_tested":d["total_tested"],
-                            "total_active":d["total_active"],
-                            "total_vaccinated1":d["total_vaccinated1"],
-                            "total_vaccinated2":d["total_vaccinated2"],
-                            "confirm":d["confirm"],
-                            "recovered":d["recovered"],
-                            "deaths":d["deaths"],
-                            "tested":d["tested"],
-                            "active":d["active"],
-                        }
-                        result_dates_data.append(res)
-                result = {
-                    "state_code":state_code,
-                    "start_date":start_date,
-                    "end_date":end_date,
-                    "state_name":state_data.state_name,
-                    "note":state_data.note,
-                    "population":state_data.population,
-                    "last_update":state_data.last_update,
-                    "data":result_dates_data
-
+    result_dates_data=[]
+    state_data = StateCovidData.objects.filter(state_code=state_code).first()
+    if state_data is not None:
+        dates_data = state_data.dates_data
+        for date in dates_data.keys():
+            # print(date)
+            if date>=start_date and date<=end_date:
+                d = dates_data[date]
+                res = {
+                    "date":date,
+                    "total_confirm":d["total_confirm"],
+                    "total_recovered":d["total_recovered"],
+                    "total_death":d["total_death"],
+                    "total_tested":d["total_tested"],
+                    "total_active":d["total_active"],
+                    "total_vaccinated1":d["total_vaccinated1"],
+                    "total_vaccinated2":d["total_vaccinated2"],
+                    "confirm":d["confirm"],
+                    "recovered":d["recovered"],
+                    "deaths":d["deaths"],
+                    "tested":d["tested"],
+                    "active":d["active"],
                 }
-                return Response(result,status=200)
-    
-    return Response({"message":"invalid"},status=400)
+                result_dates_data.append(res)
+        result = {
+            "state_code":state_code,
+            "start_date":start_date,
+            "end_date":end_date,
+            "state_name":state_data.state_name,
+            "note":state_data.note,
+            "population":state_data.population,
+            "last_update":state_data.last_update,
+            "data":result_dates_data
+
+        }
+        return Response(result,status=200)    
 
 @api_view(["GET"])
 def get_data(request):
+    collect_previous_data()
     get_daily_data()
     return Response({"message":"done"},status=200)
 
 @api_view(['POST'])
 def get_charbot_data(request):
     data = request.data
-    print(data)
+    # print(data)
     sessionID = data.get('responseId')
     result = data.get("queryResult")
     intent = result.get("intent").get('displayName')
